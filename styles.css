@@ -1,0 +1,15 @@
+/* Dyslexia-friendly styles */
+body.dyslexia-mode, body.dyslexia-mode * {
+  font-family: 'OpenDyslexic', Arial, sans-serif !important;
+  letter-spacing: 0.07em !important;
+  line-height: 1.8 !important;
+  background-color: #fdf6e3 !important;
+  color: #000 !important;
+}
+
+.dyslexia-mode p:hover,
+.dyslexia-mode span:hover,
+.dyslexia-mode li:hover {
+  background-color: #dbeafe !important;
+  transition: background-color 0.2s ease-in-out;
+}
