@@ -384,7 +384,6 @@ function getValues() {
     hoverEnabled: document.getElementById('hoverToggle').checked,
     hoverLineColor: document.getElementById('hoverLineColor').value,
     hoverOpacity: parseFloat(document.getElementById('hoverOpacityValue').value),
-    fontEnabled: document.getElementById('fontToggle').checked,
     fontSelect: document.getElementById('fontSelect').value,
   };
 }
@@ -401,7 +400,6 @@ function sendSettings() {
     hoverEnabled: values.hoverEnabled,
     hoverLineColor: values.hoverLineColor,
     hoverOpacity: values.hoverOpacity,
-    fontEnabled: values.fontEnabled,
     fontSelect: values.fontSelect,
   };
 
@@ -429,9 +427,8 @@ document.querySelectorAll('.increase, .decrease').forEach(button => {
   });
 });
 
-['fontSelect', 'fontToggle'].forEach(id => {
-  document.getElementById(id).addEventListener('change', sendSettings);
-});
+document.getElementById('fontSelect').addEventListener('change', sendSettings);
+
 
 document.querySelectorAll('input, select').forEach(el => {
   el.addEventListener('input', sendSettings);
@@ -510,7 +507,7 @@ function applySettings(settings) {
   const oldFontStyle = document.getElementById('readefine-font-style');
   if (oldFontStyle) oldFontStyle.remove();
 
-  if (settings.fontEnabled) {
+if (settings.fontSelect && settings.fontSelect !== '') {
     if (!document.getElementById('readefine-google-fonts')) {
       const fontLink = document.createElement('link');
       fontLink.rel = 'stylesheet';
@@ -576,7 +573,6 @@ document.getElementById('loadProfile').addEventListener('click', () => {
     document.getElementById('hoverToggle').checked = settings.hoverEnabled;
     document.getElementById('hoverLineColor').value = settings.hoverLineColor;
     document.getElementById('hoverOpacityValue').value = settings.hoverOpacity;
-    document.getElementById('fontToggle').checked = settings.fontEnabled;
     document.getElementById('fontSelect').value = settings.fontSelect;
 
     sendSettings();
