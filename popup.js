@@ -741,45 +741,41 @@ function populateVoiceList() {
   });
 }
 
-// Wait for voices to load
+// Populate voices when ready
 window.speechSynthesis.onvoiceschanged = populateVoiceList;
-
-function populateVoiceList() {
-  voices = speechSynthesis.getVoices();
-  const voiceSelect = document.getElementById('voiceSelect');
-  voiceSelect.innerHTML = '';
-  voices.forEach((voice, index) => {
-    const option = document.createElement('option');
-    option.value = index;
-    option.textContent = `${voice.name} (${voice.lang})`;
-    voiceSelect.appendChild(option);
-  });
-}
-
-window.speechSynthesis.onvoiceschanged = populateVoiceList;
+populateVoiceList();
 
 document.getElementById('speakButton').addEventListener('click', () => {
   const voiceIndex = parseInt(document.getElementById('voiceSelect').value);
-  const volume = parseFloat(document.getElementById('volumeControl').value);
-  const rate = parseFloat(document.getElementById('rateControl').value);
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     chrome.scripting.executeScript({
       target: { tabId: tabs[0].id },
-      func: (voiceIndex, volume, rate) => {
+      func: (voiceIndex) => {
         const text = window.getSelection().toString().trim();
         if (text) {
           const utterance = new SpeechSynthesisUtterance(text);
           const voices = speechSynthesis.getVoices();
           utterance.voice = voices[voiceIndex];
-          utterance.volume = volume;
-          utterance.rate = rate;
+          utterance.volume = 1; // Fixed default
+          utterance.rate = 1;   // Fixed default
           speechSynthesis.speak(utterance);
         } else {
           alert("Please highlight text on the page to read aloud.");
         }
       },
-      args: [voiceIndex, volume, rate]
+      args: [voiceIndex]
     });
+  });
+});
+
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(sec => sec.classList.remove('active'));
+    
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
   });
 });

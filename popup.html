@@ -6,120 +6,119 @@
 </head>
 <body>
   <h2>READefine</h2>
-  
-<div>
-  <input type="text" id="profileName" placeholder="Profile name" />
-  <button id="saveProfile">Save Profile</button>
-  <button id="deleteProfile">Delete Profile</button>
-</div>
 
-<div>
-  <select id="profileSelect"></select>
-  <button id="loadProfile">Load Profile</button>
-</div>
-
-  <label>Font Size (px)</label>
-  <div class="control-group">
-    <button class="decrease" data-target="fontSize">-</button>
-    <input type="number" id="fontSizeValue" value="16" min="12">
-    <button class="increase" data-target="fontSize">+</button>
+  <!-- Tab Navigation -->
+  <div class="tab-buttons">
+    <button class="tab active" data-tab="profileTab">Profiles</button>
+    <button class="tab" data-tab="fontTab">Font</button>
+    <button class="tab" data-tab="themesTab">Themes</button>
+    <button class="tab" data-tab="advancedTab">Advanced</button>
   </div>
 
-  <label>Line Spacing</label>
-  <div class="control-group">
-    <button class="decrease" data-target="lineSpacing">-</button>
-    <input type="number" id="lineSpacingValue" value="1.5" step="0.1" min="1">
-    <button class="increase" data-target="lineSpacing">+</button>
-  </div>
+  <!-- Profiles Tab -->
+  <section id="profileTab" class="tab-content active">
+    <input type="text" id="profileName" placeholder="Profile name" />
+    <div class="control-group">
+      <button id="saveProfile">Save</button>
+      <button id="deleteProfile">Delete</button>
+    </div>
+    <div class="control-group">
+      <select id="profileSelect"></select>
+      <button id="loadProfile">Load</button>
+    </div>
+  </section>
 
-  <label>Word Spacing (em)</label>
-  <div class="control-group">
-    <button class="decrease" data-target="wordSpacing">-</button>
-    <input type="number" id="wordSpacingValue" value="0.1" step="0.05">
-    <button class="increase" data-target="wordSpacing">+</button>
-  </div>
+  <!-- Font Tab -->
+  <section id="fontTab" class="tab-content">
+    <label>Font Size (px)</label>
+    <div class="control-group">
+      <button class="decrease" data-target="fontSize">-</button>
+      <input type="number" id="fontSizeValue" value="16" min="12">
+      <button class="increase" data-target="fontSize">+</button>
+    </div>
 
-  <label>Letter Spacing (em)</label>
-  <div class="control-group">
-    <button class="decrease" data-target="letterSpacing">-</button>
-    <input type="number" id="letterSpacingValue" value="0.05" step="0.05">
-    <button class="increase" data-target="letterSpacing">+</button>
-  </div>
+    <label>Line Spacing</label>
+    <div class="control-group">
+      <button class="decrease" data-target="lineSpacing">-</button>
+      <input type="number" id="lineSpacingValue" value="1.5" step="0.1" min="1">
+      <button class="increase" data-target="lineSpacing">+</button>
+    </div>
 
-  <label>Overlay Theme</label>
-  <select id="themeSelect">
-    <option value="">None</option>
-    <option value="cream">Soft Cream</option>
-    <option value="bluegrey">Pale Blue-Grey</option>
-    <option value="sage">Muted Sage</option>
-    <option value="peach">Pastel Peach</option>
-    <option value="lavender">Light Lavender</option>
-  </select>
+    <label>Word Spacing (em)</label>
+    <div class="control-group">
+      <button class="decrease" data-target="wordSpacing">-</button>
+      <input type="number" id="wordSpacingValue" value="0.1" step="0.05">
+      <button class="increase" data-target="wordSpacing">+</button>
+    </div>
 
-  <label>Overlay Opacity</label>
-  <div class="control-group">
-    <button class="decrease" data-target="overlayOpacity">-</button>
-    <input type="number" id="overlayOpacityValue" value="0.3" step="0.05" min="0" max="1">
-    <button class="increase" data-target="overlayOpacity">+</button>
-  </div>
-<h3>Text-to-Speech Settings</h3>
+    <label>Letter Spacing (em)</label>
+    <div class="control-group">
+      <button class="decrease" data-target="letterSpacing">-</button>
+      <input type="number" id="letterSpacingValue" value="0.05" step="0.05">
+      <button class="increase" data-target="letterSpacing">+</button>
+    </div>
 
-<label for="voiceSelect">Voice:</label>
-<select id="voiceSelect"></select>
+    <label><input type="checkbox" id="fontToggle"> Enable Font Customization</label>
 
-<label for="volumeControl">Volume:</label>
-<input type="number" id="volumeControl" value="1" step="0.1" min="0" max="1">
+    <label>Choose Font</label>
+    <select id="fontSelect">
+      <option value="Roboto">Arial</option>
+      <option value="Comic Neue">Comic Sans</option>
+      <option value="Nunito">Verdana</option>
+      <option value="Quicksand">Century Gothic</option>
+      <option value="Source Sans Pro">Calibri</option>
+    </select>
+  </section>
 
-<label for="rateControl">Rate:</label>
-<input type="number" id="rateControl" value="1" step="0.1" min="0.5" max="2">
+  <!-- Themes Tab -->
+  <section id="themesTab" class="tab-content">
+    <label>Overlay Theme</label>
+    <select id="themeSelect">
+      <option value="">None</option>
+      <option value="cream">Soft Cream</option>
+      <option value="bluegrey">Slate Blue</option>
+      <option value="sage">Muted Sage</option>
+      <option value="peach">Warm Peach</option>
+    </select>
 
-<button id="speakButton">
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 6px;">
-    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-    <path d="M19.07 4.93a9 9 0 0 1 0 14.14"></path>
-  </svg>
-  Read Selected Text
-</button>
-<label>Enable Hover Line</label>
-<input type="checkbox" id="hoverToggle">
+    <label>Overlay Opacity</label>
+    <div class="control-group">
+      <button class="decrease" data-target="overlayOpacity">-</button>
+      <input type="number" id="overlayOpacityValue" value="0.3" step="0.05" min="0" max="1">
+      <button class="increase" data-target="overlayOpacity">+</button>
+    </div>
 
-<label>Hover Highlight Color</label>
-<select id="hoverLineColor">
-  <option value="#ffff00">Yellow</option>
-  <option value="#00ffff">Cyan</option>
-  <option value="#ffb6c1">Pink</option>
-  <option value="#90ee90">Light Green</option>
-  <option value="#ffa500">Orange</option>
-</select>
+    <label><input type="checkbox" id="hoverToggle"> Enable Hover Line</label>
 
-<label>Hover Highlight Opacity</label>
-<div class="control-group">
-  <button class="decrease" data-target="hoverOpacity">-</button>
-  <input type="number" id="hoverOpacityValue" value="0.3" step="0.05" min="0" max="1">
-  <button class="increase" data-target="hoverOpacity">+</button>
-</div>
+    <label>Highlight Color</label>
+    <select id="hoverLineColor">
+      <option value="#ffff00">Yellow</option>
+      <option value="#00ffff">Cyan</option>
+      <option value="#ffb6c1">Pink</option>
+      <option value="#90ee90">Green</option>
+      <option value="#ffa500">Orange</option>
+    </select>
 
-<label>Enable Font Customization</label>
-<input type="checkbox" id="fontToggle">
+    <label>Highlight Opacity</label>
+    <div class="control-group">
+      <button class="decrease" data-target="hoverOpacity">-</button>
+      <input type="number" id="hoverOpacityValue" value="0.3" step="0.05" min="0" max="1">
+      <button class="increase" data-target="hoverOpacity">+</button>
+    </div>
+  </section>
 
-<label>Choose Font</label>
-<select id="fontSelect">
-  <option value="Roboto">Arial</option>
-  <option value="Comic Neue">Comic Sans</option>
-  <option value="Nunito">Verdana</option>
-  <option value="Quicksand">Century Gothic</option>
-  <option value="Source Sans Pro">Calibri</option>
-</select>
-<label>
-  <input type="checkbox" id="mirrorToggle">
-  Mirror Letter Assist
-</label>
-<label>
-  <input type="checkbox" id="syllableToggle" />
-  Emphasize Syllables
-</label>
+  <!-- Advanced Tab -->
+  <section id="advancedTab" class="tab-content">
+    <h3>Text-to-Speech (Ctrl + Shift + Y):</h3>
+    <label>Voice:</label>
+    <select id="voiceSelect"></select>
 
+
+    <button id="speakButton">Read Selected Text</button>
+
+    <label><input type="checkbox" id="mirrorToggle"> Mirror Letter Assist</label>
+    <label><input type="checkbox" id="syllableToggle"> Emphasize Syllables</label>
+  </section>
 
   <script src="popup.js"></script>
 </body>
