@@ -531,3 +531,255 @@ function applySettings(settings) {
     console.log('[Readefine] Font applied:', settings.fontSelect);
   }
 }
+function refreshProfileList() {
+  chrome.storage.sync.get(null, (items) => {
+    const profileSelect = document.getElementById('profileSelect');
+    profileSelect.innerHTML = '';
+
+    Object.keys(items)
+      .filter(key => key.startsWith('readefine_profile_'))
+      .forEach(key => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = key.replace('readefine_profile_', '');
+        profileSelect.appendChild(option);
+      });
+  });
+}
+document.getElementById('saveProfile').addEventListener('click', () => {
+  const name = document.getElementById('profileName').value.trim();
+  if (!name) return alert("Please enter a profile name.");
+
+  const key = 'readefine_profile_' + name;
+  const settings = getValues();
+
+  chrome.storage.sync.set({ [key]: settings }, () => {
+    alert("Profile saved!");
+    refreshProfileList();
+  });
+});
+document.getElementById('loadProfile').addEventListener('click', () => {
+  const key = document.getElementById('profileSelect').value;
+  if (!key) return;
+
+  chrome.storage.sync.get(key, (data) => {
+    const settings = data[key];
+    if (!settings) return alert("Profile not found.");
+
+    // Populate UI inputs
+    document.getElementById('fontSizeValue').value = settings.fontSize;
+    document.getElementById('lineSpacingValue').value = settings.lineSpacing;
+    document.getElementById('wordSpacingValue').value = settings.wordSpacing;
+    document.getElementById('letterSpacingValue').value = settings.letterSpacing;
+    document.getElementById('overlayOpacityValue').value = settings.overlayOpacity;
+    document.getElementById('themeSelect').value = settings.theme;
+    document.getElementById('hoverToggle').checked = settings.hoverEnabled;
+    document.getElementById('hoverLineColor').value = settings.hoverLineColor;
+    document.getElementById('hoverOpacityValue').value = settings.hoverOpacity;
+    document.getElementById('fontToggle').checked = settings.fontEnabled;
+    document.getElementById('fontSelect').value = settings.fontSelect;
+
+    sendSettings();
+  });
+});
+document.getElementById('deleteProfile').addEventListener('click', () => {
+  const key = document.getElementById('profileSelect').value;
+  if (!key) return;
+
+  chrome.storage.sync.remove(key, () => {
+    alert("Profile deleted.");
+    refreshProfileList();
+  });
+});
+window.onload = () => {
+  sendSettings();  // Apply default or current settings
+  refreshProfileList();  // Populate profile dropdown
+};
+
+// Mirror toggle
+const toggle = document.getElementById("mirrorToggle");
+
+// Initialize toggle from storage
+chrome.storage.sync.get("mirrorAssist", (data) => {
+  toggle.checked = data.mirrorAssist !== false;
+});
+
+// When user toggles mirror assist
+toggle.addEventListener("change", () => {
+  const isEnabled = toggle.checked;
+  chrome.storage.sync.set({ mirrorAssist: isEnabled }, () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.scripting.executeScript({
+        target: { tabId: tabs[0].id },
+        func: (enabled) => {
+          // Remove existing highlights
+          document.querySelectorAll('[data-mirror-highlight]').forEach(el => {
+            el.replaceWith(document.createTextNode(el.innerText));
+          });
+
+          if (!enabled) return;
+
+          const mirrorStyles = {
+            b: 'color: #007BFF; font-weight: bold; font-size: 17px;',
+            d: 'color: #28A745; font-weight: bold; font-size: 17px;',
+            p: 'color:rgb(187, 34, 77); font-weight: bold; font-size: 17px;',
+            q: 'color: #6F42C1; font-weight: bold; font-size: 17px;',
+            B: 'color: #0056b3; font-weight: bold; font-size: 17px;',
+            D: 'color: #1e7e34; font-weight: bold; font-size: 17px;',
+            P: 'color:rgb(187, 34, 77); font-weight: bold; font-size: 17px;',
+            Q: 'color: #5a32a3; font-weight: bold; font-size: 17px;'
+          };
+
+          const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+          const textNodes = [];
+
+          while (walker.nextNode()) {
+            const node = walker.currentNode;
+            if (/[bdpqBDPQ]/.test(node.nodeValue)) {
+              textNodes.push(node);
+            }
+          }
+
+          textNodes.forEach((textNode) => {
+            const span = document.createElement('span');
+            span.innerHTML = textNode.nodeValue.replace(/[bdpqBDPQ]/g, (char) => {
+              return `<span data-mirror-highlight style="${mirrorStyles[char]}">${char}</span>`;
+            });
+            textNode.parentNode.replaceChild(span, textNode);
+          });
+        },
+        args: [isEnabled]
+      });
+    });
+  });
+});
+
+document.getElementById("syllableToggle").addEventListener("change", function () {
+  const enabled = this.checked;
+
+  chrome.storage.sync.set({ syllableEmphasis: enabled });
+
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.scripting.executeScript({
+      target: { tabId: tabs[0].id },
+      func: toggleSyllableEmphasis,
+      args: [enabled]
+    });
+  });
+});
+
+// Function injected into the page
+function toggleSyllableEmphasis(enabled) {
+  const splitSyllables = (word) => {
+    // VERY BASIC SYLLABLE SPLITTER — replace with real logic later
+    return word
+      .replace(/([aeiouy]{1,2})([^aeiouy\s])/gi, "$1|$2")
+      .split("|");
+  };
+
+  const walk = (node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const text = node.textContent.trim();
+      if (!text || node.parentNode.classList?.contains("syllable-wrapper")) return;
+
+      const words = text.split(/\b/);
+      const wrapper = document.createElement("span");
+      wrapper.className = "syllable-wrapper";
+
+      words.forEach(word => {
+        if (/\w/.test(word)) {
+          const syllables = splitSyllables(word);
+          syllables.forEach((syl, idx) => {
+            const span = document.createElement("span");
+            span.textContent = syl;
+span.style.fontSize = "14px";
+span.style.backgroundColor = idx % 2 === 0 ? "rgba(212, 160, 229, 0.3)" : "rgba(254, 207, 127, 0.3)";
+span.style.borderRadius = "2px";
+span.style.padding = "0 2px";
+
+            wrapper.appendChild(span);
+          });
+        } else {
+          wrapper.appendChild(document.createTextNode(word));
+        }
+      });
+
+      node.parentNode.replaceChild(wrapper, node);
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      Array.from(node.childNodes).forEach(walk);
+    }
+  };
+
+  const restore = () => {
+    document.querySelectorAll(".syllable-wrapper").forEach(el => {
+      const fragment = document.createDocumentFragment();
+      el.childNodes.forEach(child => {
+        fragment.appendChild(document.createTextNode(child.textContent));
+      });
+      el.replaceWith(fragment);
+    });
+  };
+
+  if (enabled) {
+    walk(document.body);
+  } else {
+    restore();
+  }
+}
+
+let voices = [];
+
+function populateVoiceList() {
+  voices = speechSynthesis.getVoices();
+  const voiceSelect = document.getElementById('voiceSelect');
+  voiceSelect.innerHTML = '';
+  voices.forEach((voice, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+    option.textContent = `${voice.name} (${voice.lang})`;
+    voiceSelect.appendChild(option);
+  });
+}
+
+// Wait for voices to load
+window.speechSynthesis.onvoiceschanged = populateVoiceList;
+
+function populateVoiceList() {
+  voices = speechSynthesis.getVoices();
+  const voiceSelect = document.getElementById('voiceSelect');
+  voiceSelect.innerHTML = '';
+  voices.forEach((voice, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+    option.textContent = `${voice.name} (${voice.lang})`;
+    voiceSelect.appendChild(option);
+  });
+}
+
+window.speechSynthesis.onvoiceschanged = populateVoiceList;
+
+document.getElementById('speakButton').addEventListener('click', () => {
+  const voiceIndex = parseInt(document.getElementById('voiceSelect').value);
+  const volume = parseFloat(document.getElementById('volumeControl').value);
+  const rate = parseFloat(document.getElementById('rateControl').value);
+
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.scripting.executeScript({
+      target: { tabId: tabs[0].id },
+      func: (voiceIndex, volume, rate) => {
+        const text = window.getSelection().toString().trim();
+        if (text) {
+          const utterance = new SpeechSynthesisUtterance(text);
+          const voices = speechSynthesis.getVoices();
+          utterance.voice = voices[voiceIndex];
+          utterance.volume = volume;
+          utterance.rate = rate;
+          speechSynthesis.speak(utterance);
+        } else {
+          alert("Please highlight text on the page to read aloud.");
+        }
+      },
+      args: [voiceIndex, volume, rate]
+    });
+  });
+});
