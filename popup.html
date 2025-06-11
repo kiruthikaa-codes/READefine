@@ -64,6 +64,36 @@
 
 <button id="speakButton">🔊 Read Selected Text</button>
 
+<label>Enable Hover Line</label>
+<input type="checkbox" id="hoverToggle">
+
+<label>Hover Highlight Color</label>
+<select id="hoverLineColor">
+  <option value="#ffff00">Yellow</option>
+  <option value="#00ffff">Cyan</option>
+  <option value="#ffb6c1">Pink</option>
+  <option value="#90ee90">Light Green</option>
+  <option value="#ffa500">Orange</option>
+</select>
+
+<label>Hover Highlight Opacity</label>
+<div class="control-group">
+  <button class="decrease" data-target="hoverOpacity">-</button>
+  <input type="number" id="hoverOpacityValue" value="0.3" step="0.05" min="0" max="1">
+  <button class="increase" data-target="hoverOpacity">+</button>
+</div>
+
+<label>Enable Font Customization</label>
+<input type="checkbox" id="fontToggle">
+
+<label>Choose Font</label>
+<select id="fontSelect">
+  <option value="Roboto">Arial</option>
+  <option value="Comic Neue">Comic Sans</option>
+  <option value="Nunito">Verdana</option>
+  <option value="Quicksand">Century Gothic</option>
+  <option value="Source Sans Pro">Calibri</option>
+</select>
 
   <script src="popup.js"></script>
 </body>

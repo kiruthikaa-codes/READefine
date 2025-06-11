@@ -3,8 +3,21 @@ const stepSizes = {
   lineSpacing: 0.1,
   wordSpacing: 0.05,
   letterSpacing: 0.05,
-  overlayOpacity: 0.05
+  overlayOpacity: 0.05,
+  hoverOpacity: 0.05
+
 };
+
+function loadGoogleFonts() {
+  const fontLink = document.createElement('link');
+  fontLink.rel = 'stylesheet';
+  fontLink.href = 'https://fonts.googleapis.com/css2?family=Roboto&family=Comic+Neue&family=Nunito&family=Quicksand&family=Source+Sans+Pro&display=swap';
+  fontLink.id = 'readefine-google-fonts';
+  if (!document.getElementById('readefine-google-fonts')) {
+    document.head.appendChild(fontLink);
+  }
+}
+
 
 function getValues() {
   return {
@@ -13,7 +26,13 @@ function getValues() {
     wordSpacing: parseFloat(document.getElementById('wordSpacingValue').value),
     letterSpacing: parseFloat(document.getElementById('letterSpacingValue').value),
     overlayOpacity: parseFloat(document.getElementById('overlayOpacityValue').value),
-    theme: document.getElementById('themeSelect').value
+    theme: document.getElementById('themeSelect').value,
+    hoverEnabled: document.getElementById('hoverToggle').checked,
+    hoverLineColor: document.getElementById('hoverLineColor').value,
+    hoverOpacity: parseFloat(document.getElementById('hoverOpacityValue').value),
+    fontEnabled: document.getElementById('fontToggle').checked,
+    fontSelect: document.getElementById('fontSelect').value,
+
   };
 }
 
@@ -25,7 +44,12 @@ function sendSettings() {
     wordSpacing: values.wordSpacing + 'em',
     letterSpacing: values.letterSpacing + 'em',
     overlayOpacity: values.overlayOpacity,
-    theme: values.theme
+    theme: values.theme,
+    hoverEnabled: values.hoverEnabled,
+    hoverLineColor: values.hoverLineColor,
+    hoverOpacity: values.hoverOpacity,
+    fontEnabled: values.fontEnabled,
+    fontSelect: values.fontSelect,
   };
 
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
@@ -51,6 +75,10 @@ document.querySelectorAll('.increase, .decrease').forEach(button => {
     sendSettings();
   });
 });
+
+document.getElementById('fontSelect').addEventListener('change', sendSettings);
+document.getElementById('fontToggle').addEventListener('change', sendSettings);
+
 
 // Trigger on typing/editing inputs
 document.querySelectorAll('input, select').forEach(el => {
@@ -102,6 +130,56 @@ headings.forEach(h => {
 
     document.body.appendChild(overlay);
   }
+
+const existingHoverLine = document.getElementById('readefine-hover-line');
+if (existingHoverLine) existingHoverLine.remove();
+document.removeEventListener('mousemove', window.readefineTrack);
+
+if (settings.hoverEnabled) {
+  const line = document.createElement('div');
+  line.id = 'readefine-hover-line';
+  line.style.position = 'fixed';
+  line.style.left = 0;
+  line.style.width = '100vw';
+  line.style.height = '1.5em';
+  line.style.pointerEvents = 'none';
+  line.style.backgroundColor = settings.hoverLineColor;
+  line.style.opacity = settings.hoverOpacity;
+  line.style.zIndex = 9999;
+  document.body.appendChild(line);
+
+  window.readefineTrack = function (e) {
+    const line = document.getElementById('readefine-hover-line');
+    if (line) line.style.top = `${e.clientY - (line.offsetHeight / 2)}px`;
+  };
+
+  document.addEventListener('mousemove', window.readefineTrack);
+}
+
+// Remove previous font override if it exists
+const oldFontStyle = document.getElementById('readefine-font-style');
+if (oldFontStyle) {
+  oldFontStyle.remove();
+}
+
+// If font change is enabled
+if (settings.fontEnabled) {
+  loadGoogleFonts();
+
+  const oldFontStyle = document.getElementById('readefine-font-style');
+  if (oldFontStyle) oldFontStyle.remove();
+
+  const fontStyle = document.createElement('style');
+  fontStyle.id = 'readefine-font-style';
+  fontStyle.innerText = `
+    body, body * {
+      font-family: "${settings.fontSelect}", sans-serif !important;
+    }
+  `;
+  document.head.appendChild(fontStyle);
+}
+
+
 }
 
 let voices = [];
