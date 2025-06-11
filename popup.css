@@ -1,0 +1,22 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 10px;
+  width: 250px;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+button {
+  padding: 2px 6px;
+  font-size: 14px;
+}

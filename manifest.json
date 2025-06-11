@@ -1,22 +1,33 @@
 {
   "manifest_version": 3,
-  "name": "Dyslexia Reader",
+  "name": "READefine",
   "version": "1.0",
-  "description": "Improves readability for dyslexic users by modifying font and layout.",
-  "permissions": ["scripting", "activeTab", "storage"],
+  "description": "Accessibility tool for dyslexic readers.",
+  "permissions": ["activeTab", "scripting", "storage", "tabs"],
   "action": {
     "default_popup": "popup.html",
-    "default_icon": "icon.png"
+    "default_icon": {
+      "16": "icon.png"
+    }
+  },
+  "icons": {
+    "16": "icon.png"
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content.js"],
-      "css": ["styles.css"],
-      "run_at": "document_idle"
+      "js": ["content.js"]
     }
   ],
-  "icons": {
-    "48": "icon.png"
+  "background": {
+    "service_worker": "background.js"
+  },
+  "commands": {
+    "read-selection": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y"
+      },
+      "description": "Read the selected text aloud"
+    }
   }
 }

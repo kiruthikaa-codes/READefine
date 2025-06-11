@@ -1,15 +1,41 @@
-/* Dyslexia-friendly styles */
-body.dyslexia-mode, body.dyslexia-mode * {
-  font-family: 'OpenDyslexic', Arial, sans-serif !important;
-  letter-spacing: 0.07em !important;
-  line-height: 1.8 !important;
-  background-color: #fdf6e3 !important;
-  color: #000 !important;
+.theme-light {
+  background-color: #FAF3DD;
+  text-align: center;
+  color: #2A2A2A;
+  
 }
 
-.dyslexia-mode p:hover,
-.dyslexia-mode span:hover,
-.dyslexia-mode li:hover {
-  background-color: #dbeafe !important;
-  transition: background-color 0.2s ease-in-out;
+.theme-blue {
+  background-color: #E3EAF2;
+  color: #2A2A2A;
+}
+
+.theme-green {
+  background-color: #DDEAD1;
+  color: #2B2B2B;
+}
+
+.theme-peach {
+  background-color: #FDF1E6;
+  color: #2D2D2D;
+}
+
+.theme-lavender {
+  background-color: #EAE6F8;
+  color: #1C1C1C;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  padding: 10px;
+  width: 250px;
+}
+
+label {
+  display: block;
+  margin: 10px 0 4px;
+}
+
+input[type="range"] {
+  width: 100%;
 }
