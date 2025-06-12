@@ -385,6 +385,10 @@ function getValues() {
     hoverLineColor: document.getElementById('hoverLineColor').value,
     hoverOpacity: parseFloat(document.getElementById('hoverOpacityValue').value),
     fontSelect: document.getElementById('fontSelect').value,
+    textAlign: document.getElementById('leftAlignToggle').checked ? 'left' : 'justify',
+    enabled: document.getElementById('readefineMasterToggle').checked,
+
+
   };
 }
 
@@ -401,15 +405,23 @@ function sendSettings() {
     hoverLineColor: values.hoverLineColor,
     hoverOpacity: values.hoverOpacity,
     fontSelect: values.fontSelect,
+    textAlign: values.textAlign,
+    enabled: values.enabled,
+
+
   };
 
-  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-    chrome.scripting.executeScript({
-      target: { tabId: tabs[0].id },
-      func: applySettings,
-      args: [settings]
-    });
+chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+  chrome.scripting.executeScript({
+    target: { tabId: tabs[0].id },
+    func: values.enabled ? applySettings : resetStyles,
+    args: [values.enabled ? settings : null]
   });
+});
+
+chrome.storage.sync.set({ readefineEnabled: values.enabled });
+
+
 }
 
 document.querySelectorAll('.increase, .decrease').forEach(button => {
@@ -428,6 +440,9 @@ document.querySelectorAll('.increase, .decrease').forEach(button => {
 });
 
 document.getElementById('fontSelect').addEventListener('change', sendSettings);
+document.getElementById('leftAlignToggle').addEventListener('change', sendSettings);
+document.getElementById('readefineMasterToggle').addEventListener('change', sendSettings);
+
 
 
 document.querySelectorAll('input, select').forEach(el => {
@@ -527,7 +542,34 @@ if (settings.fontSelect && settings.fontSelect !== '') {
 
     console.log('[Readefine] Font applied:', settings.fontSelect);
   }
+
+  document.body.style.textAlign = settings.textAlign;
+
 }
+
+function resetStyles() {
+  document.body.style.fontSize = '';
+  document.body.style.lineHeight = '';
+  document.body.style.wordSpacing = '';
+  document.body.style.letterSpacing = '';
+  document.body.style.color = '';
+  document.body.style.textAlign = '';
+
+  // Remove overlay
+  const overlay = document.getElementById('readefine-overlay');
+  if (overlay) overlay.remove();
+
+  // Remove hover line
+  const line = document.getElementById('readefine-hover-line');
+  if (line) line.remove();
+  document.removeEventListener('mousemove', window.readefineTrack);
+
+  // Remove font styles
+  const style = document.getElementById('readefine-font-style');
+  if (style) style.remove();
+}
+
+
 function refreshProfileList() {
   chrome.storage.sync.get(null, (items) => {
     const profileSelect = document.getElementById('profileSelect');
@@ -589,7 +631,12 @@ document.getElementById('deleteProfile').addEventListener('click', () => {
 });
 window.onload = () => {
   sendSettings();  // Apply default or current settings
-  refreshProfileList();  // Populate profile dropdown
+  refreshProfileList();// Populate profile dropdown
+  chrome.storage.sync.get("readefineEnabled", data => {
+  const masterToggle = document.getElementById("readefineMasterToggle");
+  masterToggle.checked = data.readefineEnabled !== false; // default is true
+});
+
 };
 
 // Mirror toggle
@@ -678,27 +725,29 @@ function toggleSyllableEmphasis(enabled) {
       const text = node.textContent.trim();
       if (!text || node.parentNode.classList?.contains("syllable-wrapper")) return;
 
-      const words = text.split(/\b/);
-      const wrapper = document.createElement("span");
-      wrapper.className = "syllable-wrapper";
+const words = text.split(/(\s+)/); // split and retain spaces
+const wrapper = document.createElement("span");
+wrapper.className = "syllable-wrapper";
 
-      words.forEach(word => {
-        if (/\w/.test(word)) {
-          const syllables = splitSyllables(word);
-          syllables.forEach((syl, idx) => {
-            const span = document.createElement("span");
-            span.textContent = syl;
-span.style.fontSize = "14px";
-span.style.backgroundColor = idx % 2 === 0 ? "rgba(212, 160, 229, 0.3)" : "rgba(254, 207, 127, 0.3)";
-span.style.borderRadius = "2px";
-span.style.padding = "0 2px";
+words.forEach(word => {
+  if (/^\s+$/.test(word)) {
+    wrapper.appendChild(document.createTextNode(word)); // preserve spaces
+  } else if (/\w/.test(word)) {
+    const syllables = splitSyllables(word);
+    syllables.forEach((syl, idx) => {
+      const span = document.createElement("span");
+      span.textContent = syl;
+      span.style.fontSize = "14px";
+      span.style.backgroundColor = idx % 2 === 0 ? "rgba(212, 160, 229, 0.3)" : "rgba(254, 207, 127, 0.3)";
+      span.style.borderRadius = "2px";
+      span.style.padding = "0 2px";
+      wrapper.appendChild(span);
+    });
+  } else {
+    wrapper.appendChild(document.createTextNode(word));
+  }
+});
 
-            wrapper.appendChild(span);
-          });
-        } else {
-          wrapper.appendChild(document.createTextNode(word));
-        }
-      });
 
       node.parentNode.replaceChild(wrapper, node);
     } else if (node.nodeType === Node.ELEMENT_NODE) {

@@ -5,6 +5,11 @@
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
+  <label>
+  <input type="checkbox" id="readefineMasterToggle" checked>
+  Enable READefine
+</label>
+
   <h2>READefine</h2>
 
   <!-- Tab Navigation -->
@@ -30,6 +35,12 @@
 
   <!-- Font Tab -->
   <section id="fontTab" class="tab-content">
+
+    <label>
+  <input type="checkbox" id="leftAlignToggle" checked>
+  Left Align Text (uncheck for Justify)
+</label>
+
     <label>Font Size (px)</label>
     <div class="control-group">
       <button class="decrease" data-target="fontSize">-</button>
