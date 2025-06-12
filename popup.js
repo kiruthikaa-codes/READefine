@@ -176,6 +176,7 @@ function applySettings(settings) {
 
   document.body.style.wordSpacing = settings.wordSpacing;
   document.body.style.letterSpacing = settings.letterSpacing;
+  document.body.style.textAlign = settings.textAlign;
 
   const existingOverlay = document.getElementById('readefine-overlay');
   if (existingOverlay) existingOverlay.remove();
@@ -236,7 +237,7 @@ function applySettings(settings) {
   const oldFontStyle = document.getElementById('readefine-font-style');
   if (oldFontStyle) oldFontStyle.remove();
 
-if (settings.fontSelect && settings.fontSelect !== '') {
+  if (settings.fontSelect && settings.fontSelect !== '') {
     if (!document.getElementById('readefine-google-fonts')) {
       const fontLink = document.createElement('link');
       fontLink.rel = 'stylesheet';
@@ -257,9 +258,84 @@ if (settings.fontSelect && settings.fontSelect !== '') {
     console.log('[Readefine] Font applied:', settings.fontSelect);
   }
 
-  document.body.style.textAlign = settings.textAlign;
+  // ✅ Scoped MutationObserver
+  if (!window.readefineObserver) {
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (node.nodeType !== 1) continue; // Skip non-elements
 
+          // Skip nav, header, footer, sidebars, ads
+          if (
+            node.closest('nav, header, footer, aside, .ads, .sponsored, [aria-hidden="true"]')
+          ) continue;
+
+          // Reapply font style if missing
+          if (
+            settings.fontSelect &&
+            !document.getElementById('readefine-font-style')
+          ) {
+            const fontStyle = document.createElement('style');
+            fontStyle.id = 'readefine-font-style';
+            fontStyle.textContent = `
+              html, body, body * {
+                font-family: '${settings.fontSelect}', sans-serif !important;
+              }
+            `;
+            document.head.appendChild(fontStyle);
+          }
+
+          // Re-apply hover line if missing
+          if (
+            settings.hoverEnabled &&
+            !document.getElementById('readefine-hover-line')
+          ) {
+            const line = document.createElement('div');
+            line.id = 'readefine-hover-line';
+            line.style.position = 'fixed';
+            line.style.left = 0;
+            line.style.width = '100vw';
+            line.style.height = '1.5em';
+            line.style.pointerEvents = 'none';
+            line.style.backgroundColor = settings.hoverLineColor;
+            line.style.opacity = settings.hoverOpacity;
+            line.style.zIndex = 9999;
+            document.body.appendChild(line);
+          }
+
+          // Reapply mirror and syllable highlighting
+          chrome.storage.sync.get(['mirrorAssist', 'syllableEmphasis'], (data) => {
+            if (data.mirrorAssist) {
+              chrome.runtime.sendMessage({ action: 'applyMirrorAssist' });
+            }
+            if (data.syllableEmphasis) {
+              toggleSyllableEmphasis(true);
+            }
+          });
+        }
+      }
+    });
+
+    // Scope observer to the most relevant content container
+    const contentTargets = ['main', 'article', '[role="main"]', '#content', '.article', '.post'];
+    let target = document.body;
+    for (const selector of contentTargets) {
+      const el = document.querySelector(selector);
+      if (el) {
+        target = el;
+        break;
+      }
+    }
+
+    observer.observe(target, {
+      childList: true,
+      subtree: true
+    });
+
+    window.readefineObserver = observer;
+  }
 }
+
 
 function resetStyles() {
   document.body.style.fontSize = '';
@@ -281,6 +357,12 @@ function resetStyles() {
   // Remove font styles
   const style = document.getElementById('readefine-font-style');
   if (style) style.remove();
+
+  if (window.readefineObserver) {
+  window.readefineObserver.disconnect();
+  window.readefineObserver = null;
+}
+
 }
 
 
