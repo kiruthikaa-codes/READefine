@@ -2,7 +2,7 @@
 
 **Last updated:** June 13, 2025
 
-READefine does **not collect, store, or transmit** any personal information or user data.
+READefine does **not collect, store or transmit** any personal information or user data.
 
 All features of the extension run locally in the user's browser. No browsing data or personal details are accessed or shared.
 
