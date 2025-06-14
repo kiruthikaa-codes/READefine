@@ -62,7 +62,7 @@ Current Chrome extensions often:
 
 ---
 
-## 🧭 Project Goals
+## Project Goals
 
 - Make digital reading **accessible**, **personalized** and **inclusive**
 - Provide a **customizable, clutter-free** interface
