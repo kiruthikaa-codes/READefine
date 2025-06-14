@@ -4,15 +4,15 @@
 ---
 
 ### Authors  
-- **Kiruthika Murugesan** — [kiruthikaa-codes (GitHub)](https://github.com/kiruthikaa-codes)  
-- **Himaja Bardhan** — [b-himaja (GitHub)](https://github.com/b-himaja)
+- **Kiruthika Murugesan** - [kiruthikaa-codes](https://github.com/kiruthikaa-codes)  
+- **Himaja Bardhan** - [b-himaja](https://github.com/b-himaja)
 
 ---
 
 ## Purpose
 
 Dyslexia affects the reading ability of millions around the world, making digital content extremely strenuous to access.  
-**READefine** is a Chrome extension designed to improve the digital reading experience for dyslexic readers by offering customizable, clean, and accessible formatting.
+**READefine** is a Chrome extension designed to improve the digital reading experience for dyslexic readers by offering customizable, clean and accessible formatting.
 
 ---
 
@@ -30,7 +30,7 @@ While READefine is primarily designed for users with dyslexia, it also benefits:
 
 ## What is Dyslexia?
 
-Dyslexia is a **language-based learning difference** that affects reading, writing, and spelling — unrelated to intelligence or vision.  
+Dyslexia is a **language-based learning difference** that affects reading, writing, and spelling, unrelated to intelligence or vision.  
 Symptoms include:
 
 - Difficulty decoding words  
@@ -38,7 +38,7 @@ Symptoms include:
 - Poor spelling and writing  
 - Reduced phonological awareness  
 
-**Note:** Dyslexia exists on a spectrum; symptoms vary in severity from person to person.
+**Note-->** Dyslexia exists on a spectrum; symptoms vary in severity from person to person.
 
 ---
 
@@ -49,7 +49,7 @@ While popular, studies (ex: Rello & Baeza-Yates, 2013) show:
 
 - No significant improvement in reading speed or accuracy  
 - Some users found the shapes distracting  
-- Font preferences are personal — no one-size-fits-all
+- Font preferences are personal - no one-size-fits-all
 
 ### 2. **Existing Extensions**
 Current Chrome extensions often:
@@ -64,7 +64,7 @@ Current Chrome extensions often:
 
 ## 🧭 Project Goals
 
-- Make digital reading **accessible**, **personalized**, and **inclusive**
+- Make digital reading **accessible**, **personalized** and **inclusive**
 - Provide a **customizable, clutter-free** interface
 - Offer **visual adjustments** beyond font (spacing, contrast, overlays)
 - Support **text-to-speech**
@@ -75,7 +75,7 @@ Current Chrome extensions often:
 ## Features
 
 - **Font Customization** - Change font types and spacing  
-- **Adjustable Spacing** - Line, word, and letter spacing  
+- **Adjustable Spacing** - Line, word and letter spacing  
 - **Left Justification** - Improves readability  
 - **Overlay Filters** - Reduce harsh backgrounds  
 - **Text-to-Speech** - With voice customization  
@@ -89,9 +89,9 @@ Current Chrome extensions often:
 
 ## Design Philosophy
 
-- **Minimalism** — Reduce visual clutter  
-- **User Empathy** — Designed with dyslexic users in mind  
-- **Accessibility First** — Inclusive and readable
+- **Minimalism** - Reduce visual clutter  
+- **User Empathy** - Designed with dyslexic users in mind  
+- **Accessibility First** - Inclusive and readable
 
 ### Available Themes
 
@@ -133,8 +133,8 @@ The extension is **lightweight** and **framework-free**.
 ## Limitations
 
 - Syllable splitting uses **basic regex**, not linguistic parsing  
-- Uses **native Web Speech API** — convenient but not fully reliable  
-- **Limited themes** — intentional to avoid overwhelming users
+- Uses **native Web Speech API** - convenient but not fully reliable  
+- **Limited themes** - intentional to avoid overwhelming users
 
 ---
 
@@ -143,7 +143,7 @@ The extension is **lightweight** and **framework-free**.
 - PDF support  
 - Mobile browser version  
 - AI-powered text summarization  
-- Support for other conditions (e.g., ADHD, dysgraphia)  
+- More support for other conditions (ex: ADHD, dysgraphia)  
 - NLP for smarter, context-aware processing
 
 ---
