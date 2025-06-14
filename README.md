@@ -3,32 +3,32 @@
 
 ---
 
-### 👩‍💻 Authors  
+### Authors  
 - **Kiruthika Murugesan** — [kiruthikaa-codes (GitHub)](https://github.com/kiruthikaa-codes)  
 - **Himaja Bardhan** — [b-himaja (GitHub)](https://github.com/b-himaja)
 
 ---
 
-## 🎯 Purpose
+## Purpose
 
 Dyslexia affects the reading ability of millions around the world, making digital content extremely strenuous to access.  
 **READefine** is a Chrome extension designed to improve the digital reading experience for dyslexic readers by offering customizable, clean, and accessible formatting.
 
 ---
 
-## 👥 Target Users
+## Target Users
 
 While READefine is primarily designed for users with dyslexia, it also benefits:
 
 - Students working through dense reading materials
 - Professionals seeking reduced eye strain
 - Parents/educators supporting dyslexic readers
-- Neurodivergent individuals (e.g., ADHD, autism)
+- Neurodivergent individuals (ex: ADHD, autism)
 - Users with visual impairments or poor eyesight
 
 ---
 
-## ❓ What is Dyslexia?
+## What is Dyslexia?
 
 Dyslexia is a **language-based learning difference** that affects reading, writing, and spelling — unrelated to intelligence or vision.  
 Symptoms include:
@@ -42,10 +42,10 @@ Symptoms include:
 
 ---
 
-## 🔍 Existing Solutions and Their Gaps
+## Existing Solutions and Their Gaps
 
 ### 1. **OpenDyslexic Font**
-While popular, studies (e.g., Rello & Baeza-Yates, 2013) show:
+While popular, studies (ex: Rello & Baeza-Yates, 2013) show:
 
 - No significant improvement in reading speed or accuracy  
 - Some users found the shapes distracting  
@@ -58,7 +58,7 @@ Current Chrome extensions often:
 - Offer limited, cluttered features  
 - Are paid or lack accessibility options
 
-**READefine** solves this by combining diverse accessibility features into a **free**, **open-source**, and **user-friendly** interface.
+**READefine** solves this by combining diverse accessibility features into a **free**, **open-source** and **user-friendly** interface.
 
 ---
 
@@ -72,28 +72,28 @@ Current Chrome extensions often:
 
 ---
 
-## 🧩 Features
+## Features
 
-- **Font Customization** — Change font types and spacing  
-- **Adjustable Spacing** — Line, word, and letter spacing  
-- **Left Justification** — Improves readability  
-- **Overlay Filters** — Reduce harsh backgrounds  
-- **Text-to-Speech** — With voice customization  
-- **Syllable Emphasis** — Alternate syllables for easier reading  
-- **Hover to Highlight** — Track lines visually  
-- **Theme Toggles** — Carefully curated themes  
-- **Mirror Reversal Assist** — Highlights confusing letters  
-- **User Profiles** — Save personal settings
+- **Font Customization** - Change font types and spacing  
+- **Adjustable Spacing** - Line, word, and letter spacing  
+- **Left Justification** - Improves readability  
+- **Overlay Filters** - Reduce harsh backgrounds  
+- **Text-to-Speech** - With voice customization  
+- **Syllable Emphasis** - Alternate syllables for easier reading  
+- **Hover to Highlight** - Track lines visually  
+- **Theme Toggles** - Carefully curated themes  
+- **Mirror Reversal Assist** - Highlights confusing letters  
+- **User Profiles** - Save personal settings
 
 ---
 
-## 🎨 Design Philosophy
+## Design Philosophy
 
 - **Minimalism** — Reduce visual clutter  
 - **User Empathy** — Designed with dyslexic users in mind  
 - **Accessibility First** — Inclusive and readable
 
-### 🎨 Available Themes
+### Available Themes
 
 - Cream: `#FAF3DD`  
 - Pale Blue-Grey: `#E3EAF2`  
@@ -102,21 +102,21 @@ Current Chrome extensions often:
 
 ---
 
-## 🏗 Technical Architecture
+## Technical Architecture
 
 ### 🔧 Tech Stack
 
-- **HTML5** — UI structure  
-- **CSS3** — Styling and themes  
-- **JavaScript** — Extension logic and interactivity  
-- **Chrome Extension APIs** — Storage and tab interaction  
-- **Web Speech API** — TTS (Text-to-Speech)
+- **HTML5** - UI structure  
+- **CSS3** - Styling and themes  
+- **JavaScript** - Extension logic and interactivity  
+- **Chrome Extension APIs** - Storage and tab interaction  
+- **Web Speech API** - TTS (Text-to-Speech)
 
 The extension is **lightweight** and **framework-free**.
 
 ---
 
-### 📁 Chrome Extension Structure
+### Chrome Extension Structure
 
 | File             | Purpose |
 |------------------|---------|
@@ -130,7 +130,7 @@ The extension is **lightweight** and **framework-free**.
 
 ---
 
-## ⚠️ Limitations
+## Limitations
 
 - Syllable splitting uses **basic regex**, not linguistic parsing  
 - Uses **native Web Speech API** — convenient but not fully reliable  
@@ -138,7 +138,7 @@ The extension is **lightweight** and **framework-free**.
 
 ---
 
-## 🚀 Future Integrations
+## Future Integrations
 
 - PDF support  
 - Mobile browser version  
@@ -148,7 +148,7 @@ The extension is **lightweight** and **framework-free**.
 
 ---
 
-## 📚 References
+## References
 
 - [British Dyslexia Association Style Guide](https://www.bdadyslexia.org.uk/advice/employers/creating-a-dyslexia-friendly-workplace/dyslexia-friendly-style-guide)  
 - [UX Movement - Dyslexia UX Tips](https://uxmovement.com/content/6-surprising-bad-practices-that-hurt-dyslexic-users/)  
